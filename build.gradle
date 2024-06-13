@@ -8,31 +8,23 @@ base.archivesName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
-repositories {}
+project.ext.lwjglVersion = "3.3.2"
 
-loom {
-	// Only needed for versions not available from vanilla launcher by default.
-	// customMinecraftManifest.set("https://meta.legacyfabric.net/v2/manifest/${minecraft_version}")
-
-	// Required by 1.7.x
-	// runs {
-	// 	client {
-	// 		programArgs "--userProperties", "{}"
-	// 	}
-	// }
-}
+repositories { }
+loom { }
 
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings(legacy.yarn(project.minecraft_version, project.yarn_build))
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	modImplementation "org.lwjgl:lwjgl-glfw:$lwjglVersion"
 
-	// Fabric API provides hooks for events, item registration, and more. As most mods will need this, it's included by default.
-	// If you know for a fact you don't, it's not required and can be safely removed.
-	modImplementation "net.legacyfabric.legacy-fabric-api:legacy-fabric-api:${project.fabric_version}"
-
-	// You can retrieve a specific api module using this notation.
-	// modImplementation(legacy.apiModule("legacy-fabric-item-groups-v1", project.fabric_version))
+	include(implementation("org.lwjgl:lwjgl-vulkan:$lwjglVersion"))
+	include(implementation("org.lwjgl:lwjgl-vma:$lwjglVersion"))
+	include(implementation("org.lwjgl:lwjgl-shaderc:$lwjglVersion"))
+	
+	include(runtimeOnly("org.lwjgl:lwjgl-vma:$lwjglVersion:natives-linux-arm32"))
+	include(runtimeOnly("org.lwjgl:lwjgl-shaderc:$lwjglVersion:natives-linux-arm32"))
 }
 
 processResources {
@@ -55,8 +47,8 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_1_8
-	targetCompatibility = JavaVersion.VERSION_1_8
+	sourceCompatibility = JavaVersion.VERSION_14
+	targetCompatibility = JavaVersion.VERSION_17
 
 	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
 	// if it is present.
