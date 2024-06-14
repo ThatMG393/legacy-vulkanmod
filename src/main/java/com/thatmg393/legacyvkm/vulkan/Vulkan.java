@@ -7,6 +7,7 @@ import java.nio.LongBuffer;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.glfw.GLFWNativeGLX;
 import org.lwjgl.glfw.GLFWVulkan;
+import org.lwjgl.opengl.Display;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.vulkan.VK10;
 import org.lwjgl.vulkan.VK11;
@@ -31,7 +32,7 @@ public class Vulkan {
 
     public void initialize(long windowPtr) {
         createVkInstance();
-        setupSurface(GLFWNativeGLX.glfwGetGLXWindow());
+        setupSurface(Display.getHandle());
         
         GPUManager.getInstance().initAndSelectDevice(instance);
     }

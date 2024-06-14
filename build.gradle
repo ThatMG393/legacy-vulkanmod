@@ -10,13 +10,17 @@ group = project.maven_group
 
 project.ext.lwjglVersion = "3.3.2"
 
-repositories { }
 loom { }
+
+repositories {
+	maven { url 'https://jitpack.io' }
+}
 
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings(legacy.yarn(project.minecraft_version, project.yarn_build))
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	modImplementation "com.github.Zarzelcow:legacy-lwjgl3:main-SNAPSHOT"
 	modImplementation "org.lwjgl:lwjgl-glfw:$lwjglVersion"
 
 	include(implementation("org.lwjgl:lwjgl-vulkan:$lwjglVersion"))
@@ -25,6 +29,10 @@ dependencies {
 	
 	include(runtimeOnly("org.lwjgl:lwjgl-vma:$lwjglVersion:natives-linux-arm32"))
 	include(runtimeOnly("org.lwjgl:lwjgl-shaderc:$lwjglVersion:natives-linux-arm32"))
+}
+
+configurations.all {
+	exclude group: 'org.lwjgl.lwjgl'
 }
 
 processResources {

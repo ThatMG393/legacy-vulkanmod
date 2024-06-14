@@ -29,7 +29,7 @@ public class GPUManager {
         populateSupportedGPUs(instance);
         selectGPU(0); // TODO: Get index from config
 
-        RenderLayer
+        
     }
 
     public void selectGPU(int index) {
