@@ -8,7 +8,6 @@ import org.lwjgl.PointerBuffer;
 import org.lwjgl.glfw.GLFWVulkan;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.system.MemoryStack;
-import org.lwjgl.vulkan.KHRAndroidSurface;
 import org.lwjgl.vulkan.VK11;
 import org.lwjgl.vulkan.VkApplicationInfo;
 import org.lwjgl.vulkan.VkInstance;
@@ -59,6 +58,7 @@ public class Vulkan {
     }
 
     private void setupSurface(long windowPtr) {
+        System.out.println("VK Surface setup!");
         try (MemoryStack stack = MemoryStack.stackPush()) {
             LongBuffer surfacePtr = stack.mallocLong(0);
 
