@@ -50,6 +50,7 @@ public class Vulkan {
             VkInstanceCreateInfo vici = VkInstanceCreateInfo.calloc(stack);
             vici.sType(VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO);
             vici.pApplicationInfo(vai);
+            vici.ppEnabledExtensionNames(getGLFWRequiredExtensions());
 
             PointerBuffer instancePtr = stack.mallocPointer(1);
             ResultChecker.checkResult(vkCreateInstance(vici, null, instancePtr), "Failed to create a Vulkan instance");
@@ -63,12 +64,18 @@ public class Vulkan {
         LegacyVulkanMod.LOGGER.info("Handle -> " + windowPtr);
         
         try (MemoryStack stack = MemoryStack.stackPush()) {
-            LongBuffer surfacePtr = stack.mallocLong(1);
+            LongBuffer surfacePtr = stack.longs(VK_NULL_HANDLE);
+
+            LegacyVulkanMod.LOGGER.info("uh " + instance.getCapabilities().vkCreateAndroidSurfaceKHR);
 
             ResultChecker.checkResult(GLFWVulkan.glfwCreateWindowSurface(instance, windowPtr, null, surfacePtr), "Failed to create a Vulkan window");
-
+            
             this.surfacePtr = surfacePtr.get(0);
         }
+    }
+
+    private PointerBuffer getGLFWRequiredExtensions() {
+        return GLFWVulkan.glfwGetRequiredInstanceExtensions();
     }
 
     public VkInstance getVkInstance() {
