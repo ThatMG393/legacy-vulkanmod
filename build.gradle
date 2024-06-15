@@ -26,9 +26,15 @@ dependencies {
 	include(implementation("org.lwjgl:lwjgl-vulkan:$lwjglVersion"))
 	include(implementation("org.lwjgl:lwjgl-vma:$lwjglVersion"))
 	include(implementation("org.lwjgl:lwjgl-shaderc:$lwjglVersion"))
-	
-	include(runtimeOnly("org.lwjgl:lwjgl-vma:$lwjglVersion:natives-linux-arm32"))
-	include(runtimeOnly("org.lwjgl:lwjgl-shaderc:$lwjglVersion:natives-linux-arm32"))
+
+	include(runtimeOnly("org.lwjgl:lwjgl:$lwjglVersion:natives-linux"))
+	include(runtimeOnly("org.lwjgl:lwjgl-opengl:$lwjglVersion:natives-linux"))
+	include(runtimeOnly("org.lwjgl:lwjgl-openal:$lwjglVersion:natives-linux"))
+
+	include(runtimeOnly("org.lwjgl:lwjgl-vma:$lwjglVersion:natives-linux"))
+	include(runtimeOnly("org.lwjgl:lwjgl-shaderc:$lwjglVersion:natives-linux"))
+
+	include(implementation(fileTree(dir: 'src/main/libs', include: '*.jar')))
 }
 
 configurations.all {
@@ -50,7 +56,7 @@ tasks.withType(JavaCompile).configureEach {
 	it.options.encoding = "UTF-8"
 
 	if (JavaVersion.current().isJava9Compatible()) {
-		it.options.release = 8
+		it.options.release = 14
 	}
 }
 

@@ -28,12 +28,15 @@ public class GPUManager {
     public void initAndSelectDevice(VkInstance instance) {
         populateSupportedGPUs(instance);
         selectGPU(0); // TODO: Get index from config
-
-        
     }
 
     public void selectGPU(int index) {
         selectedGPU = supportedGPUs.get(index);
+        selectedGPU.init();
+    }
+
+    public GPU getSelectedGPU() {
+        return selectedGPU;
     }
 
     public void populateSupportedGPUs(VkInstance instance) {
@@ -51,14 +54,14 @@ public class GPUManager {
 
             for (int i = 0; i < physicalDevicesPtr.capacity(); i++) {
                 VkPhysicalDevice gpu = new VkPhysicalDevice(physicalDevicesPtr.get(i), instance);
-                if (isGPUSupported(gpu)) supportedGPUs.add(gpu);
+                if (isGPUSupported(gpu)) supportedGPUs.add(new GPU(gpu));
             }
         }
     }
 
     public boolean isGPUSupported(VkPhysicalDevice device) {
         PointerBuffer glfwReqExt = GLFWVulkan.glfwGetRequiredInstanceExtensions();
-        
+        // TODO: Implement
         return true;
     }
 }

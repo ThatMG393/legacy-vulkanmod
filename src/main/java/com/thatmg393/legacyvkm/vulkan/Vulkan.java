@@ -30,7 +30,7 @@ public class Vulkan {
     private VkInstance instance;
     private long surfacePtr;
 
-    public void initialize(long windowPtr) {
+    public void initialize() {
         createVkInstance();
         setupSurface(Display.getHandle());
         
@@ -67,5 +67,9 @@ public class Vulkan {
 
             this.surfacePtr = surfacePtr.get(0);
         }
+    }
+
+    public VkInstance getVkInstance() {
+        return this.instance;
     }
 }

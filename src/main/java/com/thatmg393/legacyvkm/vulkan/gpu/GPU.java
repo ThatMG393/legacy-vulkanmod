@@ -3,9 +3,14 @@ package com.thatmg393.legacyvkm.vulkan.gpu;
 import static org.lwjgl.vulkan.VK10.*;
 
 import org.lwjgl.system.MemoryStack;
+import org.lwjgl.util.vma.VmaVulkanFunctions;
+import org.lwjgl.vulkan.VkDevice;
 import org.lwjgl.vulkan.VkFormatProperties;
 import org.lwjgl.vulkan.VkPhysicalDevice;
+import org.lwjgl.vulkan.VkPhysicalDeviceProperties;
 
+import com.thatmg393.legacyvkm.vulkan.Vulkan;
+import com.thatmg393.legacyvkm.vulkan.utils.GPUPropertiesUtil;
 import com.thatmg393.legacyvkm.vulkan.utils.ResultChecker;
 
 public class GPU {
@@ -13,7 +18,10 @@ public class GPU {
     public final String vendorName;
     public final int apiVersion;
 
+    private VkDevice logicalDevice;
     private VkPhysicalDevice physicalDevice;
+    private VkPhysicalDeviceProperties phyDevProperties;
+
     private long vmaPtr;
 
     private int depthFormat = -69420;
@@ -21,8 +29,12 @@ public class GPU {
     public GPU(VkPhysicalDevice physicalDevice) {
         this.physicalDevice = physicalDevice;
 
-        initializeVMA();
-        initializeFinalVars();
+        this.phyDevProperties = VkPhysicalDeviceProperties.malloc();
+        vkGetPhysicalDeviceProperties(physicalDevice, phyDevProperties);
+
+        this.name = phyDevProperties.deviceNameString();
+        this.vendorName = GPUPropertiesUtil.vendorIDToString(phyDevProperties.vendorID());
+        this.apiVersion = phyDevProperties.apiVersion();
     }
 
     public int getOptimalDepthFormat() {
@@ -30,7 +42,7 @@ public class GPU {
 
         int[] optimalDepthFormat = null;
         
-        if (deviceVendor.toLowerCase().equals("nvidia")) optimalDepthFormat = new int[] { VK_FORMAT_D24_UNORM_S8_UINT, VK_FORMAT_X8_D24_UNORM_PACK32, VK_FORMAT_D32_SFLOAT, VK_FORMAT_D32_SFLOAT_S8_UINT };
+        if (vendorName.toLowerCase().equals("nvidia")) optimalDepthFormat = new int[] { VK_FORMAT_D24_UNORM_S8_UINT, VK_FORMAT_X8_D24_UNORM_PACK32, VK_FORMAT_D32_SFLOAT, VK_FORMAT_D32_SFLOAT_S8_UINT };
         optimalDepthFormat = new int[] { VK_FORMAT_D32_SFLOAT, VK_FORMAT_D32_SFLOAT_S8_UINT };
         
         try (MemoryStack stack = MemoryStack.stackPush()) {
@@ -50,11 +62,18 @@ public class GPU {
         return 0;
     }
 
-    private void initializeVMA() {
-        
+    public VkDevice asLogicalDevice() {
+        return this.logicalDevice;
     }
 
-    private void initializeFinalVars() {
+    protected void init() {
+        initializeVMA();
+    }
 
+    private void initializeVMA() {
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            VmaVulkanFunctions vvf = VmaVulkanFunctions.calloc(stack);
+            // vvf.set(Vulkan.getInstance().getVkInstance(), physicalDevice);
+        }
     }
 }
