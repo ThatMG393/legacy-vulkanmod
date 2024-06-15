@@ -13,8 +13,8 @@ import net.minecraft.client.MinecraftClient;
 
 @Mixin(MinecraftClient.class)
 public class MinecraftClientM {
-    @Inject(method = "setPixelMethod", at = @At("RETURN"), remap = false)
-    private void onSetPixelMethod(CallbackInfo ci) throws LWJGLException {
+    @Inject(method = "setPixelFormat", at = @At("RETURN"), remap = false)
+    private void onSetPixelFormat(CallbackInfo ci) throws LWJGLException {
         LegacyVulkanMod.LOGGER.info("Window was probably created.");
         LegacyVulkanMod.LOGGER.info("Initializing Vulkan now");
 
