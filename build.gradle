@@ -24,6 +24,8 @@ dependencies {
 	modImplementation "com.github.Zarzelcow:legacy-lwjgl3:main-SNAPSHOT"
 	modImplementation "org.lwjgl:lwjgl-glfw:$lwjglVersion"
 
+	include(implementation("org.javassist:javassist:3.29.2-GA"))
+
 	include(implementation("org.lwjgl:lwjgl-vulkan:$lwjglVersion"))
 	include(implementation("org.lwjgl:lwjgl-vma:$lwjglVersion"))
 	include(implementation("org.lwjgl:lwjgl-shaderc:$lwjglVersion"))
