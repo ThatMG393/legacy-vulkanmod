@@ -60,6 +60,8 @@ public class Vulkan {
 
     private void setupSurface(long windowPtr) {
         LegacyVulkanMod.LOGGER.info("VK Surface setup!");
+        LegacyVulkanMod.LOGGER.info("Handle -> " + windowPtr);
+        
         try (MemoryStack stack = MemoryStack.stackPush()) {
             LongBuffer surfacePtr = stack.mallocLong(1);
 
