@@ -12,7 +12,7 @@ import com.thatmg393.legacyvkm.LegacyVulkanMod;
 @Mixin(Display.class)
 public class DisplayM {
     @Inject(method = "create(Lorg/lwjgl/opengl/PixelFormat;)V", at = @At("RETURN"), remap = false)
-    public void onCreateWindow(PixelFormat useless1, CallbackInfo ci) {
+    public static void onCreateWindow(PixelFormat useless1, CallbackInfo ci) {
         LegacyVulkanMod.LOGGER.info("Window created, getting window handle...");
         LegacyVulkanMod.LOGGER.info("Window Handle -> " + Display.getHandle());
     }
