@@ -21,8 +21,8 @@ import net.minecraft.client.MinecraftClient;
 
 @Mixin(MinecraftClient.class)
 public class MinecraftClientM {
-    @Inject(method = "initializeGame", at = @At("HEAD"))
-    private void onInitializeGame(CallbackInfo ci) throws LWJGLException, IOException {
+    @Inject(method = "setPixelFormat", at = @At("HEAD"))
+    private void sstPixelFormat_HEAD(CallbackInfo ci) throws LWJGLException {
         // TODO: MOVE TO LEGACY LWJGL3 (or not cus platform specific issue)
         ClassPool pool = new ClassPool();
         pool.appendClassPath(new LoaderClassPath(FabricLauncherBase.getLauncher().getTargetClassLoader()));
@@ -30,6 +30,8 @@ public class MinecraftClientM {
         try {
             CtClass cls = pool.get("org.lwjgl.glfw.GLFW");
             if (cls.getDeclaredMethod("glfwPlatformSupported", new CtClass[] { CtClass.intType }) == null) {
+                LegacyVulkanMod.LOGGER.info("punjabiloonchir detected!1!1!");
+
                 CtMethod mth = new CtMethod(CtClass.booleanType, "glfwPlatformSupported", new CtClass[] { CtClass.intType }, cls);
                 mth.setBody("return true;");
 
@@ -39,7 +41,7 @@ public class MinecraftClientM {
     }
 
     @Inject(method = "setPixelFormat", at = @At("RETURN"))
-    private void onSetPixelFormat(CallbackInfo ci) throws LWJGLException {
+    private void setPixelFormat_RETURN(CallbackInfo ci) throws LWJGLException {
         LegacyVulkanMod.LOGGER.info("Window was probably created.");
         LegacyVulkanMod.LOGGER.info("Initializing Vulkan now...");
 
