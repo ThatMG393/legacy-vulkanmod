@@ -5,11 +5,10 @@ import static org.lwjgl.vulkan.VK10.*;
 import java.nio.LongBuffer;
 
 import org.lwjgl.PointerBuffer;
-import org.lwjgl.glfw.GLFWNativeGLX;
 import org.lwjgl.glfw.GLFWVulkan;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.system.MemoryStack;
-import org.lwjgl.vulkan.VK10;
+import org.lwjgl.vulkan.KHRAndroidSurface;
 import org.lwjgl.vulkan.VK11;
 import org.lwjgl.vulkan.VkApplicationInfo;
 import org.lwjgl.vulkan.VkInstance;
@@ -61,7 +60,7 @@ public class Vulkan {
 
     private void setupSurface(long windowPtr) {
         try (MemoryStack stack = MemoryStack.stackPush()) {
-            LongBuffer surfacePtr = stack.longs(VK10.VK_NULL_HANDLE);
+            LongBuffer surfacePtr = stack.mallocLong(0);
 
             ResultChecker.checkResult(GLFWVulkan.glfwCreateWindowSurface(instance, windowPtr, null, surfacePtr), "Failed to create a Vulkan window");
 
