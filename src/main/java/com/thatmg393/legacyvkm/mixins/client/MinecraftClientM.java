@@ -29,7 +29,11 @@ public class MinecraftClientM {
 
         try {
             CtClass cls = pool.get("org.lwjgl.glfw.GLFW");
-            if (cls.getDeclaredMethod("glfwPlatformSupported", new CtClass[] { CtClass.intType }) == null) {
+            
+            try {
+                cls.getDeclaredMethod("glfwPlatformSupported", new CtClass[] { CtClass.intType });
+                LegacyVulkanMod.LOGGER.info("seems like no patch needed.");
+            } catch (Exception e1) {
                 LegacyVulkanMod.LOGGER.info("punjabiloonchir detected!1!1!");
 
                 CtMethod mth = new CtMethod(CtClass.booleanType, "glfwPlatformSupported", new CtClass[] { CtClass.intType }, cls);
