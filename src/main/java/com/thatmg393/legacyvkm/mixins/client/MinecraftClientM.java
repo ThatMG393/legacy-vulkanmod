@@ -2,7 +2,6 @@ package com.thatmg393.legacyvkm.mixins.client;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.GL20;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -42,7 +41,7 @@ public class MinecraftClientM {
                 mth.setBody("return true;");
 
                 cls.addMethod(mth);
-                DefineClassHelper.toClass(cls.getName(), Object.class, pool.getClassLoader(), null, cls.toBytecode());
+                // DefineClassHelper.toClass(cls.getName(), null, pool.getClassLoader(), null, cls.toBytecode());
                 cls.detach();
             }
         } catch (Exception e) {
