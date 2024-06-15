@@ -13,6 +13,7 @@ import org.lwjgl.vulkan.VkApplicationInfo;
 import org.lwjgl.vulkan.VkInstance;
 import org.lwjgl.vulkan.VkInstanceCreateInfo;
 
+import com.thatmg393.legacyvkm.LegacyVulkanMod;
 import com.thatmg393.legacyvkm.vulkan.gpu.GPUManager;
 import com.thatmg393.legacyvkm.vulkan.utils.ResultChecker;
 
@@ -58,7 +59,7 @@ public class Vulkan {
     }
 
     private void setupSurface(long windowPtr) {
-        System.out.println("VK Surface setup!");
+        LegacyVulkanMod.LOGGER.info("VK Surface setup!");
         try (MemoryStack stack = MemoryStack.stackPush()) {
             LongBuffer surfacePtr = stack.mallocLong(0);
 
