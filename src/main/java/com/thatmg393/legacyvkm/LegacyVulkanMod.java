@@ -14,6 +14,6 @@ public class LegacyVulkanMod implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		LOGGER.info("Is this really worth it?");
-		Vulkan.getInstance().initialize();
+		// Vulkan.getInstance().initialize();
 	}
 }
