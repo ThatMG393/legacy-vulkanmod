@@ -1,7 +1,5 @@
 package com.thatmg393.legacyvkm.mixins.client;
 
-import java.io.IOException;
-
 import org.lwjgl.LWJGLException;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -15,14 +13,16 @@ import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.LoaderClassPath;
-
+import javassist.util.proxy.DefineClassHelper;
 import net.fabricmc.loader.impl.launch.FabricLauncherBase;
 import net.minecraft.client.MinecraftClient;
 
 @Mixin(MinecraftClient.class)
 public class MinecraftClientM {
-    @Inject(method = "setPixelFormat", at = @At("HEAD"))
-    private void sstPixelFormat_HEAD(CallbackInfo ci) throws LWJGLException {
+    @Inject(method = "setPixelFormat", at = @At("INVOKE"))
+    private void setPixelFormat_HEAD(CallbackInfo ci) throws LWJGLException {
+        LegacyVulkanMod.LOGGER.info("Patchy time? No? Alright :(");
+
         // TODO: MOVE TO LEGACY LWJGL3 (or not cus platform specific issue)
         ClassPool pool = new ClassPool();
         pool.appendClassPath(new LoaderClassPath(FabricLauncherBase.getLauncher().getTargetClassLoader()));
@@ -36,8 +36,12 @@ public class MinecraftClientM {
                 mth.setBody("return true;");
 
                 cls.addMethod(mth);
+                DefineClassHelper.toClass(cls.getName(), null, pool.getClassLoader(), null, cls.toBytecode());
+                cls.detach();
             }
-        } catch (Exception e) { }
+        } catch (Exception e) {
+            e.printStackTrace(System.err);
+        }
     }
 
     @Inject(method = "setPixelFormat", at = @At("RETURN"))
