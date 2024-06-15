@@ -18,7 +18,8 @@ repositories {
 
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings(legacy.yarn(project.minecraft_version, project.yarn_build))
+	mappings "net.legacyfabric:yarn:${project.minecraft_version}+build.${project.yarn_build}:v2"
+
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "com.github.Zarzelcow:legacy-lwjgl3:main-SNAPSHOT"
 	modImplementation "org.lwjgl:lwjgl-glfw:$lwjglVersion"
