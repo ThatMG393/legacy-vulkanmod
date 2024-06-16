@@ -12,6 +12,5 @@ public class LegacyVulkanMod implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		LOGGER.info("Is this really worth it?");
-		// Vulkan.getInstance().initialize();
 	}
 }
