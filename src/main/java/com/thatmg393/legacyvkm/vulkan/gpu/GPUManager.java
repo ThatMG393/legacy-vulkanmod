@@ -27,10 +27,10 @@ public class GPUManager {
 
     public void initAndSelectDevice(VkInstance instance) {
         populateSupportedGPUs(instance);
-        selectGPU(0); // TODO: Get index from config
+        selectGPUAndInit(0); // TODO: Get index from config
     }
 
-    public void selectGPU(int index) {
+    public void selectGPUAndInit(int index) {
         selectedGPU = supportedGPUs.get(index);
         selectedGPU.init();
     }

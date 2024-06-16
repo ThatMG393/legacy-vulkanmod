@@ -4,7 +4,6 @@
   "package": "com.thatmg393.legacyvkm.mixins",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "lwjgl.DisplayM",
     "client.MinecraftClientM"
   ],
   "client": [

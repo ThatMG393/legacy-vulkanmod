@@ -60,13 +60,11 @@ public class Vulkan {
     }
 
     private void setupSurface(long windowPtr) {
-        LegacyVulkanMod.LOGGER.info("VK Surface setup!");
-        LegacyVulkanMod.LOGGER.info("Handle -> " + windowPtr);
+        LegacyVulkanMod.LOGGER.debug("VK Surface setup!");
+        LegacyVulkanMod.LOGGER.debug("Window handle -> " + windowPtr);
         
         try (MemoryStack stack = MemoryStack.stackPush()) {
             LongBuffer surfacePtr = stack.longs(VK_NULL_HANDLE);
-
-            LegacyVulkanMod.LOGGER.info("uh " + instance.getCapabilities().vkCreateAndroidSurfaceKHR);
 
             ResultChecker.checkResult(GLFWVulkan.glfwCreateWindowSurface(instance, windowPtr, null, surfacePtr), "Failed to create a Vulkan window");
             
