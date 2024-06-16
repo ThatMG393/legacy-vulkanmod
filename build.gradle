@@ -41,7 +41,7 @@ dependencies {
 	include(runtimeOnly("org.lwjgl:lwjgl-shaderc:$lwjglVersion:natives-windows"))
 	include(runtimeOnly("org.lwjgl:lwjgl-shaderc:$lwjglVersion:natives-linux-arm32"))
 
-	include(implementation(fileTree(dir: 'src/main/libs', include: '*.jar')))
+	modImplementation(fileTree(dir: 'src/main/libs', include: '*.jar'))
 }
 
 configurations.all {
