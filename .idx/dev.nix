@@ -14,17 +14,5 @@
       "vscjava.vscode-java-test"
       "vscjava.vscode-maven"
     ];
-
-    previews = {
-      enable = true;
-      previews = {
-        web = {
-          command = [
-            "./gradlew" "runClient"
-          ];
-          manager = "web";
-        };
-      };
-    };
   };
 }

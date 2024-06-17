@@ -24,17 +24,10 @@ dependencies {
 	modImplementation "com.github.Zarzelcow:legacy-lwjgl3:main-SNAPSHOT"
 	modImplementation "org.lwjgl:lwjgl-glfw:$lwjglVersion"
 
-	include(implementation("org.javassist:javassist:3.29.2-GA"))
-
+	include(modImplementation("org.slf4j:slf4j-api:2.1.0-alpha1"))
 	include(implementation("org.lwjgl:lwjgl-vulkan:$lwjglVersion"))
 	include(implementation("org.lwjgl:lwjgl-vma:$lwjglVersion"))
 	include(implementation("org.lwjgl:lwjgl-shaderc:$lwjglVersion"))
-
-	/* VM onli
-	include(runtimeOnly("org.lwjgl:lwjgl:$lwjglVersion:natives-linux"))
-	include(runtimeOnly("org.lwjgl:lwjgl-opengl:$lwjglVersion:natives-linux"))
-	include(runtimeOnly("org.lwjgl:lwjgl-openal:$lwjglVersion:natives-linux"))
-        */
 
 	include(runtimeOnly("org.lwjgl:lwjgl-vma:$lwjglVersion:natives-windows"))
 	include(runtimeOnly("org.lwjgl:lwjgl-vma:$lwjglVersion:natives-linux-arm32"))
