@@ -11,6 +11,8 @@ import org.lwjgl.vulkan.VK11;
 import org.lwjgl.vulkan.VkDevice;
 import org.lwjgl.vulkan.VkFormatProperties;
 import org.lwjgl.vulkan.VkPhysicalDevice;
+import org.lwjgl.vulkan.VkPhysicalDeviceMemoryProperties;
+
 import org.lwjgl.vulkan.VkPhysicalDeviceProperties;
 
 import com.thatmg393.legacyvkm.vulkan.Vulkan;
@@ -25,7 +27,9 @@ public class GPU {
 
     private VkDevice logicalDevice;
     private VkPhysicalDevice physicalDevice;
-    private VkPhysicalDeviceProperties phyDevProperties;
+    
+    public final VkPhysicalDeviceProperties phyDevProperties;
+    public final VkPhysicalDeviceMemoryProperties phyDevMemProperties;
 
     private long vmaPtr;
 
@@ -36,6 +40,9 @@ public class GPU {
 
         this.phyDevProperties = VkPhysicalDeviceProperties.malloc();
         vkGetPhysicalDeviceProperties(physicalDevice, phyDevProperties);
+
+        this.phyDevMemProperties = VkPhysicalDeviceMemoryProperties.malloc();
+        vkGetPhysicalDeviceMemoryProperties(physicalDevice, phyDevMemProperties);
 
         this.name = phyDevProperties.deviceNameString();
         this.vendorName = GPUPropertiesUtil.vendorIDToString(phyDevProperties.vendorID());
