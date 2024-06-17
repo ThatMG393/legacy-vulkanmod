@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 import com.thatmg393.legacyvkm.vulkan.gpu.GPU;
 import com.thatmg393.legacyvkm.vulkan.gpu.GPUManager;
+import com.thatmg393.legacyvkm.vulkan.memory.MemoryType;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -55,6 +56,10 @@ public class DebugHudM {
         rt.add("GPU: " + gpu.name);
         rt.add("GPU Vendor: " + gpu.vendorName);
         rt.add("GPU Vulkan Version: " + gpu.apiVersion);
+
+        rt.add("");
+        rt.add(format("GPU Memory: {0}MB/{1}MB", MemoryType.GPU_MEM.getUsedMemory(), MemoryType.GPU_MEM.getMaxMemory()));
+        rt.add(format("BAR Memory: {0}MB/{1}MB", MemoryType.BAR_MEM.getUsedMemory(), MemoryType.BAR_MEM.getMaxMemory()));
 
         rt.add("");
         
