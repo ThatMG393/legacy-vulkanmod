@@ -43,9 +43,11 @@ configurations.all {
 
 processResources {
 	inputs.property "version", project.version
+	inputs.property "mod_id", project.archives_base_name
 
 	filesMatching("fabric.mod.json") {
 		expand "version": project.version
+		expand "mod_id": project.archives_base_name
 	}
 }
 

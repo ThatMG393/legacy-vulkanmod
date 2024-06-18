@@ -17,13 +17,20 @@ import com.thatmg393.legacyvkm.vulkan.vma.VMAManager;
 
 public enum MemoryType {
     GPU_MEM(
+        true,
         VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
         VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT | VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT,
         VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT
     ),
     BAR_MEM(
+        true,
         VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT | VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
         VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT
+    ),
+    RAM_MEM(
+        false,
+        VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+        0
     );
 
     private final long maxMemory;
@@ -31,13 +38,15 @@ public enum MemoryType {
 
     private final int memoryFlags;
 
-    MemoryType(int... flags) {
+    MemoryType(boolean useVRAM, int... flags) {
         VkPhysicalDeviceMemoryProperties vpdmp = GPUManager.getInstance().getSelectedGPU().phyDevMemProperties;
-
+        final int VRAMFlag = useVRAM ? VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT : (hasHeapFlag(0) ? 0 : VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
         for (int flagMask : flags) {
             for (VkMemoryType memType : vpdmp.memoryTypes()) {
                 VkMemoryHeap memHeap = vpdmp.memoryHeaps(memType.heapIndex());
-                if ((flagMask & memType.propertyFlags()) == flagMask) {
+                int availableFlags = memType.propertyFlags();
+
+                if ((flagMask & availableFlags) == flagMask && (useVRAM == ((availableFlags & VRAMFlag) != 0))) {
                     this.maxMemory = memHeap.size();
                     this.memoryFlags = flagMask;
 
@@ -78,5 +87,9 @@ public enum MemoryType {
 
     public int getUsedMemory() {
         return (int) (usedMemory >> 20);
+    }
+
+    private boolean hasHeapFlag(int heapFlag) {
+        return GPUManager.getInstance().getSelectedGPU().phyDevMemProperties.memoryHeaps().parallelStream().anyMatch(e -> e.flags() == heapFlag);
     }
 }

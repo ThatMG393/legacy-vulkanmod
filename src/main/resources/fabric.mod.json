@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "legacy-vulkanmod",
+  "id": "${mod_id}",
   "version": "${version}",
   "name": "Legacy VulkanMod",
   "description": "Backport of xCollateral's VulkanMod for 1.8.9 minecraft.",
@@ -11,7 +11,7 @@
     "sources": "https://github.com/ThatMG393/legacy-vulkanmod"
   },
   "license": "CC0-1.0",
-  "icon": "assets/legacy-vulkanmod/icon.png",
+  "icon": "assets/${mod_id}/icon.png",
   "environment": "client",
   "entrypoints": {
     "client": [
@@ -19,7 +19,7 @@
     ]
   },
   "mixins": [
-    "legacy-vulkanmod.mixins.json"
+    "${mod_id}.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.15.10",
