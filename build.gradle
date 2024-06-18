@@ -56,12 +56,12 @@ tasks.withType(JavaCompile).configureEach {
 	it.options.encoding = "UTF-8"
 
 	if (JavaVersion.current().isJava9Compatible()) {
-		it.options.release = 14
+		it.options.release = 17
 	}
 }
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_14
+	sourceCompatibility = JavaVersion.VERSION_17
 	targetCompatibility = JavaVersion.VERSION_17
 
 	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
