@@ -9,11 +9,13 @@ import org.lwjgl.system.MemoryStack;
 import org.lwjgl.vulkan.VkPhysicalDevice;
 import org.lwjgl.vulkan.VkQueueFamilyProperties;
 
+import lombok.Getter;
+
 public class QueuesFamilyIndices {
-    public static int graphicsFamily = VK_QUEUE_FAMILY_IGNORED, presentFamily = VK_QUEUE_FAMILY_IGNORED, transferFamily = VK_QUEUE_FAMILY_IGNORED;
-
+    @Getter
+    private static int graphicsFamily = VK_QUEUE_FAMILY_IGNORED, presentFamily = VK_QUEUE_FAMILY_IGNORED, transferFamily = VK_QUEUE_FAMILY_IGNORED;
     private static boolean hasDedicatedTransferQueue = false;
-
+                     
     public static boolean findQueueFamilies(VkPhysicalDevice physicalDevice) {
         try (MemoryStack stack = MemoryStack.stackPush()) {
             IntBuffer familyCountBuf = stack.ints(0);
@@ -88,19 +90,7 @@ public class QueuesFamilyIndices {
         return IntStream.of(graphicsFamily, presentFamily, transferFamily).distinct().toArray();
     }
 
-    public static int getGraphicsFamily() {
-        return graphicsFamily;
-    }
-
-    public static int getPresentFamily() {
-        return presentFamily;
-    }
-
-    public static int getTransferFamily() {
-        return transferFamily;
-    }
-
-    public static boolean isHasDedicatedTransferQueue() {
+    public static boolean hasDedicatedTransferQueue() {
         return hasDedicatedTransferQueue;
     }
 }

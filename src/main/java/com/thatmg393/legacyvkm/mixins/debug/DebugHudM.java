@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+import com.thatmg393.legacyvkm.LegacyVulkanMod;
 import com.thatmg393.legacyvkm.vulkan.gpu.GPU;
 import com.thatmg393.legacyvkm.vulkan.gpu.GPUManager;
 import com.thatmg393.legacyvkm.vulkan.memory.MemoryType;
@@ -43,23 +44,23 @@ public class DebugHudM {
     protected List<String> getRightText() {
         ArrayList<String> rt = new ArrayList<>();
 
-        rt.add(format("{0} Java {1} {2}-bit", System.getProperty("java.vm.vendor"), System.getProperty("java.version"), System.getProperty("sun.arch.data.model")));
-        rt.add(format("Memory: {0}MB/{1}MB", toMiB(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()), toMiB(Runtime.getRuntime().maxMemory())));
+        rt.add(fastFormat("{0} Java {1} {2}-bit", System.getProperty("java.vm.vendor"), System.getProperty("java.version"), System.getProperty("sun.arch.data.model")));
+        rt.add(fastFormat("Memory: {0}MB/{1}MB", toMiB(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()), toMiB(Runtime.getRuntime().maxMemory())));
         
         rt.add("");
 
-        rt.add("VulkanMod " + 0);
+        rt.add("VulkanMod v" + LegacyVulkanMod.VERSION);
         rt.add("LWJGL Version: " + Sys.VERSION);
 
         GPU gpu = GPUManager.getInstance().getSelectedGPU();
         rt.add("-- GPU INFO --");
-        rt.add("GPU: " + gpu.name);
-        rt.add("GPU Vendor: " + gpu.vendorName);
-        rt.add("GPU Vulkan Version: " + gpu.apiVersion);
+        rt.add("Name: : " + gpu.name);
+        rt.add("Vendor: " + gpu.vendorName);
+        rt.add("Vulkan Version: " + gpu.apiVersion);
 
         rt.add("");
-        rt.add(format("GPU Memory: {0}MB/{1}MB", MemoryType.GPU_MEM.getUsedMemory(), MemoryType.GPU_MEM.getMaxMemory()));
-        rt.add(format("BAR Memory: {0}MB/{1}MB", MemoryType.BAR_MEM.getUsedMemory(), MemoryType.BAR_MEM.getMaxMemory()));
+        rt.add(fastFormat("GPU Memory: {0}MB/{1}MB", MemoryType.GPU_MEM.getUsedMemory(), MemoryType.GPU_MEM.getMaxMemory()));
+        rt.add(fastFormat("BAR Memory: {0}MB/{1}MB", MemoryType.BAR_MEM.getUsedMemory(), MemoryType.BAR_MEM.getMaxMemory()));
 
         rt.add("");
         
@@ -74,7 +75,7 @@ public class DebugHudM {
         return rt;
     }
 
-    private final String format(String format, Object... args) {
+    private final String fastFormat(String format, Object... args) {
         return MessageFormatter.arrayFormat(format, args).getMessage();
     }
 }

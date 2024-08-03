@@ -61,7 +61,8 @@ public class GPUManager {
 
     public boolean isGPUSupported(VkPhysicalDevice device) {
         PointerBuffer glfwReqExt = GLFWVulkan.glfwGetRequiredInstanceExtensions();
-        // TODO: Implement
+
+        
         return true;
     }
 }

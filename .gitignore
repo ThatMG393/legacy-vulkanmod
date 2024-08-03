@@ -25,3 +25,7 @@ run/
 
 # macos
 *.DS_Store
+
+# project idx
+.idx/
+dev.nix
