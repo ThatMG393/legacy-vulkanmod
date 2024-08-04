@@ -35,7 +35,7 @@ public class VMAManager {
 
             ResultChecker.checkResult(
                 vmaCreateBuffer(
-                    GPUManager.getInstance().getSelectedGPU().getVMA(),
+                    GPUManager.getInstance().getSelectedGPU().getVmaPtr(),
                     vbci, vaci, bufferPtr, memoryAllocPtr, null
                 ),
                 "Failed to create buffer"
@@ -57,6 +57,6 @@ public class VMAManager {
     }
 
     public void mapBuffer(long allocation, PointerBuffer data) {
-        vmaMapMemory(GPUManager.getInstance().getSelectedGPU().getVMA(), allocation, data);
+        vmaMapMemory(GPUManager.getInstance().getSelectedGPU().getVmaPtr(), allocation, data);
     }
 }
