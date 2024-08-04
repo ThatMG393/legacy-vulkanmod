@@ -11,7 +11,7 @@ import org.lwjgl.vulkan.VkQueue;
 import com.thatmg393.legacyvkm.vulkan.gpu.GPUManager;
 
 public enum VkQueues implements AutoCloseable {
-    GraphicsQueue(QueuesFamilyIndices.getGraphicsFamily(), false);
+    GraphicsQueue(QueueFamilyIndices.getGraphicsFamily(), false);
 
     private final int familyIndex;
     private final CommandPool commandPool;

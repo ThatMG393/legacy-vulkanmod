@@ -7,32 +7,28 @@ import org.lwjgl.system.MemoryStack;
 import org.lwjgl.util.vma.Vma;
 import org.lwjgl.util.vma.VmaAllocatorCreateInfo;
 import org.lwjgl.util.vma.VmaVulkanFunctions;
-import org.lwjgl.vulkan.VK11;
-import org.lwjgl.vulkan.VkDevice;
-import org.lwjgl.vulkan.VkFormatProperties;
-import org.lwjgl.vulkan.VkPhysicalDevice;
-import org.lwjgl.vulkan.VkPhysicalDeviceMemoryProperties;
-
-import org.lwjgl.vulkan.VkPhysicalDeviceProperties;
+import org.lwjgl.vulkan.*;
 
 import com.thatmg393.legacyvkm.vulkan.Vulkan;
-import com.thatmg393.legacyvkm.vulkan.queue.QueuesFamilyIndices;
+import com.thatmg393.legacyvkm.vulkan.queue.QueueFamilyIndices;
 import com.thatmg393.legacyvkm.vulkan.utils.GPUPropertiesUtil;
 import com.thatmg393.legacyvkm.vulkan.utils.ResultChecker;
+
+import lombok.Getter;
 
 public class GPU {
     public final String name;
     public final String vendorName;
     public final int apiVersion;
-
-    private VkDevice logicalDevice;
-    private VkPhysicalDevice physicalDevice;
     
     public final VkPhysicalDeviceProperties phyDevProperties;
     public final VkPhysicalDeviceMemoryProperties phyDevMemProperties;
 
+    @Getter
     private long vmaPtr;
 
+    private VkDevice logicalDevice;
+    private VkPhysicalDevice physicalDevice;
     private int depthFormat = -69420;
 
     public GPU(VkPhysicalDevice physicalDevice) {
@@ -47,10 +43,6 @@ public class GPU {
         this.name = phyDevProperties.deviceNameString();
         this.vendorName = GPUPropertiesUtil.vendorIDToString(phyDevProperties.vendorID());
         this.apiVersion = phyDevProperties.apiVersion();
-    }
-
-    public long getVMA() {
-        return vmaPtr;
     }
 
     public int getOptimalDepthFormat() {
@@ -84,7 +76,7 @@ public class GPU {
 
     protected void init() {
         initializeVMA();
-        QueuesFamilyIndices.findQueueFamilies(physicalDevice);
+        QueueFamilyIndices.findQueueFamilies(physicalDevice);
     }
 
     private void initializeVMA() {

@@ -1,21 +1,21 @@
 package com.thatmg393.legacyvkm.vulkan.synchronization;
 
-import com.thatmg393.legacyvkm.vulkan.gpu.GPUManager;
-import com.thatmg393.legacyvkm.vulkan.synchronization.base.Synchronization;
-
-import static org.lwjgl.vulkan.VK10.*;
+import static org.lwjgl.vulkan.VK10.vkWaitForFences;
 
 import java.nio.LongBuffer;
 
 import org.lwjgl.system.MemoryUtil;
 
+import com.thatmg393.legacyvkm.vulkan.gpu.GPUManager;
+import com.thatmg393.legacyvkm.vulkan.synchronization.base.Synchronization;
+
+import lombok.Getter;
+
 public class SyncFences extends Synchronization<Long> {
     public static final int MAX_FENCES = 64; // TODO: just a warning -> ALWAYS CHANGE THIS!
-    private static final SyncFences INSTANCE = new SyncFences(MAX_FENCES);
 
-    public static synchronized SyncFences getInstance() {
-        return INSTANCE;
-    }
+    @Getter
+    private static final SyncFences instance = new SyncFences(MAX_FENCES);
 
     private final LongBuffer fences;
 

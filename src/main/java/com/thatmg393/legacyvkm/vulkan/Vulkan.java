@@ -8,17 +8,15 @@ import org.lwjgl.PointerBuffer;
 import org.lwjgl.glfw.GLFWVulkan;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.system.MemoryStack;
-import org.lwjgl.vulkan.VK11;
-import org.lwjgl.vulkan.VkApplicationInfo;
-import org.lwjgl.vulkan.VkInstance;
-import org.lwjgl.vulkan.VkInstanceCreateInfo;
+import org.lwjgl.vulkan.*;
 
-import com.thatmg393.legacyvkm.LegacyVulkanMod;
 import com.thatmg393.legacyvkm.vulkan.gpu.GPUManager;
 import com.thatmg393.legacyvkm.vulkan.utils.ResultChecker;
 
+import lombok.Getter;
+
 public class Vulkan {
-    private static Vulkan SG_INSTANCE = new Vulkan();
+    private static final Vulkan SG_INSTANCE = new Vulkan();
 
     public static Vulkan getInstance() {
         return SG_INSTANCE;
@@ -26,14 +24,15 @@ public class Vulkan {
 
     private Vulkan() { }
 
-    private VkInstance instance;
+    @Getter
+    private VkInstance vkInstance;
     private long surfacePtr;
 
     public void initialize() {
         createVkInstance();
         setupSurface(Display.getHandle());
         
-        GPUManager.getInstance().initAndSelectDevice(instance);
+        GPUManager.getInstance().initAndSelectDevice(vkInstance);
     }
 
     private void createVkInstance() {
@@ -55,18 +54,15 @@ public class Vulkan {
             PointerBuffer instancePtr = stack.mallocPointer(1);
             ResultChecker.checkResult(vkCreateInstance(vici, null, instancePtr), "Failed to create a Vulkan instance");
 
-            instance = new VkInstance(instancePtr.get(0), vici);
+            vkInstance = new VkInstance(instancePtr.get(0), vici);
         }
     }
 
-    private void setupSurface(long windowPtr) {
-        LegacyVulkanMod.LOGGER.debug("VK Surface setup!");
-        LegacyVulkanMod.LOGGER.debug("Window handle -> " + windowPtr);
-        
+    private void setupSurface(long windowPtr) {        
         try (MemoryStack stack = MemoryStack.stackPush()) {
             LongBuffer surfacePtr = stack.longs(VK_NULL_HANDLE);
 
-            ResultChecker.checkResult(GLFWVulkan.glfwCreateWindowSurface(instance, windowPtr, null, surfacePtr), "Failed to create a Vulkan window");
+            ResultChecker.checkResult(GLFWVulkan.glfwCreateWindowSurface(vkInstance, windowPtr, null, surfacePtr), "Failed to create a Vulkan window");
             
             this.surfacePtr = surfacePtr.get(0);
         }
@@ -74,9 +70,5 @@ public class Vulkan {
 
     private PointerBuffer getGLFWRequiredExtensions() {
         return GLFWVulkan.glfwGetRequiredInstanceExtensions();
-    }
-
-    public VkInstance getVkInstance() {
-        return this.instance;
     }
 }

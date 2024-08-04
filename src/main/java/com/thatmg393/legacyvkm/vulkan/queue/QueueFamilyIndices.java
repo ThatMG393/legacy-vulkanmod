@@ -11,7 +11,7 @@ import org.lwjgl.vulkan.VkQueueFamilyProperties;
 
 import lombok.Getter;
 
-public class QueuesFamilyIndices {
+public class QueueFamilyIndices {
     @Getter
     private static int graphicsFamily = VK_QUEUE_FAMILY_IGNORED, presentFamily = VK_QUEUE_FAMILY_IGNORED, transferFamily = VK_QUEUE_FAMILY_IGNORED;
     private static boolean hasDedicatedTransferQueue = false;

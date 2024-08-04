@@ -1,7 +1,8 @@
 package com.thatmg393.legacyvkm.vulkan.vma;
 
-import static org.lwjgl.vulkan.VK10.*;
-import static org.lwjgl.util.vma.Vma.*;
+import static org.lwjgl.util.vma.Vma.vmaCreateBuffer;
+import static org.lwjgl.util.vma.Vma.vmaMapMemory;
+import static org.lwjgl.vulkan.VK10.VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
 
 import java.nio.LongBuffer;
 
@@ -14,12 +15,11 @@ import com.thatmg393.legacyvkm.vulkan.buffer.base.BaseBuffer;
 import com.thatmg393.legacyvkm.vulkan.gpu.GPUManager;
 import com.thatmg393.legacyvkm.vulkan.utils.ResultChecker;
 
-public class VMAManager {
-    private static final VMAManager INSTANCE = new VMAManager();
+import lombok.Getter;
 
-    public static VMAManager getInstance() {
-        return INSTANCE;
-    }
+public class VMAManager {
+    @Getter
+    private static final VMAManager instance = new VMAManager();
 
     private VMAManager() { }
 
