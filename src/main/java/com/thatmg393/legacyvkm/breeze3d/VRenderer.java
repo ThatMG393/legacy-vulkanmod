@@ -1,6 +1,6 @@
-package com.thatmg393.legacyvkm.impl.screen;
+package com.thatmg393.legacyvkm.breeze3d;
 
-public class Renderer {
+public class VRenderer {
     public void begin() {
 
     }

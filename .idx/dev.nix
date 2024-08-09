@@ -9,6 +9,7 @@
     pkgs.mesa-demos
     pkgs.novnc
     pkgs.hostname-debian
+    pkgs.turbovnc
   ];
 
   idx = {
