@@ -13,9 +13,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 import com.thatmg393.legacyvkm.LegacyVulkanMod;
-import com.thatmg393.legacyvkm.vulkan.gpu.GPU;
-import com.thatmg393.legacyvkm.vulkan.gpu.GPUManager;
-import com.thatmg393.legacyvkm.vulkan.memory.MemoryType;
+import com.thatmg393.vkapi.gpu.GPU;
+import com.thatmg393.vkapi.gpu.GPUManager;
+import com.thatmg393.vkapi.memory.MemoryType;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

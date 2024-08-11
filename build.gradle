@@ -12,18 +12,22 @@ sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
 repositories {
-	maven { url 'https://jitpack.io' }
+    mavenCentral()
+    
+    maven {
+        name = 'Jitpack'
+        url = 'https://jitpack.io'
+    }
 }
 
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.legacyfabric:yarn:${project.minecraft_version}+build.${project.yarn_build}:v2"
 
-	implementation "it.unimi.dsi:fastutil-core:${project.fastutil_core_version}"
-
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "com.github.Zarzelcow:legacy-lwjgl3:main-SNAPSHOT"
 
+	include(modImplementation("it.unimi.dsi:fastutil:${project.fastutil_core_version}"))
 	include(modImplementation("org.slf4j:slf4j-api:${project.slf4j_api_version}"))
 
 	includeLWJGLDeps()
@@ -53,10 +57,6 @@ jar {
 	from("LICENSE") {
 		rename { "${it}_${base.archivesName.get()}" }
 	}
-}
-
-java {
-	withSourcesJar()
 }
 
 lombok {

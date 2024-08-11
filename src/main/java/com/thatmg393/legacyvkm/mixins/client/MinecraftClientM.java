@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.thatmg393.legacyvkm.LegacyVulkanMod;
 import com.thatmg393.legacyvkm.config.Platform;
-import com.thatmg393.legacyvkm.vulkan.Vulkan;
+import com.thatmg393.vkapi.Vulkan;
 
 import net.minecraft.client.MinecraftClient;
 
