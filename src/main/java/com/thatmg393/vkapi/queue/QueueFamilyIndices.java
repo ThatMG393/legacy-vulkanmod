@@ -14,6 +14,8 @@ import lombok.Getter;
 public class QueueFamilyIndices {
     @Getter
     private static int graphicsFamily = VK_QUEUE_FAMILY_IGNORED, presentFamily = VK_QUEUE_FAMILY_IGNORED, transferFamily = VK_QUEUE_FAMILY_IGNORED;
+    
+    @Getter
     private static boolean hasDedicatedTransferQueue = false;
                      
     public static boolean findQueueFamilies(VkPhysicalDevice physicalDevice) {
@@ -88,9 +90,5 @@ public class QueueFamilyIndices {
 
     public static int[] uniqueFamily() {
         return IntStream.of(graphicsFamily, presentFamily, transferFamily).distinct().toArray();
-    }
-
-    public static boolean hasDedicatedTransferQueue() {
-        return hasDedicatedTransferQueue;
     }
 }

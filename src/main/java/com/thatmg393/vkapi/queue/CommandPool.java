@@ -19,10 +19,10 @@ import org.lwjgl.vulkan.VkFenceCreateInfo;
 import org.lwjgl.vulkan.VkQueue;
 import org.lwjgl.vulkan.VkSubmitInfo;
 
-import com.thatmg393.vkapi.gpu.GPUManager;
 import com.thatmg393.vkapi.utils.ResultChecker;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import lombok.Getter;
 
 public class CommandPool implements AutoCloseable {
     private static final int DEFAULT_COMMAND_BUFFER_SIZE = 10;
@@ -33,11 +33,11 @@ public class CommandPool implements AutoCloseable {
     private final VkDevice currentDevice;
     private final long commandPoolPtr;
 
-    public CommandPool(VkDevice currentDevice, int queueFamIndex) {
+    public CommandPool(VkDevice currentDevice, int familyIndex) {
         try (MemoryStack stack = MemoryStack.stackPush()) {
             VkCommandPoolCreateInfo vcpci = VkCommandPoolCreateInfo.calloc(stack);
             vcpci.sType(VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO);
-            vcpci.queueFamilyIndex(queueFamIndex);
+            vcpci.queueFamilyIndex(familyIndex);
             vcpci.flags(VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT);
 
             LongBuffer commandPoolPtr = stack.mallocLong(1);
@@ -113,7 +113,7 @@ public class CommandPool implements AutoCloseable {
     public long submitCommands(CommandBuffer cb, VkQueue queue) {
         try (MemoryStack stack = MemoryStack.stackPush()) {
             vkEndCommandBuffer(cb.cmdBufHandle);
-            vkResetFences(GPUManager.getInstance().getSelectedGPU().asLogicalDevice(), cb.fenceHandle);
+            vkResetFences(currentDevice, cb.fenceHandle);
 
             VkSubmitInfo vsi = VkSubmitInfo.calloc(stack);
             vsi.sType(VK_STRUCTURE_TYPE_SUBMIT_INFO);
@@ -136,32 +136,17 @@ public class CommandPool implements AutoCloseable {
         availableCommandBuffers.add(availCb);
     }
 
+    @Getter
     public class CommandBuffer {
-        final VkCommandBuffer cmdBufHandle;
-        final long fenceHandle;
+        private final VkCommandBuffer cmdBufHandle;
+        private final long fenceHandle;
 
-        boolean isSubmitted;
-        boolean isRecording;
+        private boolean isSubmitted;
+        private boolean isRecording;
 
         CommandBuffer(VkCommandBuffer cmdBufHandle, long fenceHandle) {
             this.cmdBufHandle = cmdBufHandle;
             this.fenceHandle = fenceHandle;
-        }
-
-        public VkCommandBuffer getCmdBufHandle() {
-            return cmdBufHandle;
-        }
-
-        public long getFenceHandle() {
-            return fenceHandle;
-        }
-
-        public boolean isSubmitted() {
-            return isSubmitted;
-        }
-
-        public boolean isRecording() {
-            return isRecording;
         }
 
         public void reset() {

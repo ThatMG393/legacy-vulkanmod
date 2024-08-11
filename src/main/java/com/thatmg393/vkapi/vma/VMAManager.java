@@ -10,7 +10,6 @@ import java.util.HashMap;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.util.vma.VmaAllocationCreateInfo;
-import org.lwjgl.util.vma.VmaAllocatorCreateInfo;
 import org.lwjgl.vulkan.VkBufferCreateInfo;
 import org.lwjgl.vulkan.VkImageCreateInfo;
 
@@ -19,7 +18,6 @@ import com.thatmg393.vkapi.gpu.GPUManager;
 import com.thatmg393.vkapi.image.base.BaseImage;
 import com.thatmg393.vkapi.utils.ResultChecker;
 
-import lombok.Builder;
 import lombok.Getter;
 
 public class VMAManager {
@@ -28,7 +26,7 @@ public class VMAManager {
 
     private VMAManager() { }
 
-    private final HashMap<Long, BaseImage> images = new HashMap<>();
+    private final HashMap<Long, BaseImage<? extends BaseImage.Builder>> images = new HashMap<>();
 
     public void createBuffer(long size, int usage, int memoryFlags, LongBuffer bufferPtr, PointerBuffer memoryAllocPtr) {
         try (MemoryStack stack = MemoryStack.stackPush()) {
@@ -66,7 +64,7 @@ public class VMAManager {
         vmaMapMemory(getVMA(), allocation, data);
     }
 
-    public void addImage(BaseImage image) {
+    public void addImage(BaseImage<? extends BaseImage.Builder> image) {
         images.putIfAbsent(image.getId(), image);
     }
 
