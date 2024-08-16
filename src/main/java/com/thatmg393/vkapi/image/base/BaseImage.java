@@ -56,10 +56,5 @@ public class BaseImage<B extends BaseImage.Builder> {
         @lombok.Builder.Default private int usage = VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_SAMPLED_BIT;
         @lombok.Builder.Default private byte mipLevels = 1;
         @lombok.Builder.Default private byte samplerFlags = 0;
-
-        public static Builder.BuilderBuilder<?, ?> getBuilder(int width, int height) {
-            return internalBuilder().setWidth(width).setHeight(height);
-            
-        }
     }
 }

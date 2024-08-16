@@ -29,8 +29,9 @@ dependencies {
 
 	include(modImplementation("it.unimi.dsi:fastutil:${project.fastutil_core_version}"))
 	include(modImplementation("org.slf4j:slf4j-api:${project.slf4j_api_version}"))
-
-	includeLWJGLDeps()
+	
+	includeLWJGLModules()
+	includeLWJGLNatives()
 }
 
 configurations.all {
@@ -60,28 +61,42 @@ jar {
 }
 
 lombok {
-    version = "${project.lombok_version}"
+    version = project.lombok_version
 }
 
 loom { }
 
-void includeLWJGLDeps() {
-    String[] lwjglNatives = project.lwjgl_natives.split(',')
-    String[] lwjglModules = project.lwjgl_modules.split(',')
+void includeLWJGLModules() {
+	String[] lwjglModules = project.lwjgl_modules.split(',')
+	dependencies {
+		lwjglModules.each { m ->
+			if (m == 'lwjgl') {
+				include(implementation("org.lwjgl:${m}:${project.lwjgl_version}"))
+			} else {
+				if (m == 'glfw') {
+					implementation("org.lwjgl:lwjgl-${m}:${project.lwjgl_version}")
+				} else {
+					include(implementation("org.lwjgl:lwjgl-${m}:${project.lwjgl_version}"))
+				}
+			}
+		}
+	}
+}
+
+void includeLWJGLNatives() {
+	String[] lwjglModules = project.lwjgl_modules.split(',')
+    String[] lwjglNativesArch = project.lwjgl_natives_arch.split(',')
     dependencies {
         lwjglModules.each { m ->
-			if (m == 'glfw') {
-				modImplementation("org.lwjgl:lwjgl-glfw:${project.lwjgl_version}")
-				return	
-			}
+            lwjglNativesArch.any { n ->
+                if (m == 'vulkan' && (n != 'macos' || n != 'macos-arm64'))
+					return
 
-            include(implementation("org.lwjgl:lwjgl-${m}:${project.lwjgl_version}"))
-            lwjglNatives.any { n ->
-                if (m == 'vulkan' && (n != 'macos' || n != 'macos-arm64')) {
-                    return
-                }
-                
-                include(runtimeOnly("org.lwjgl:lwjgl-${m}:${project.lwjgl_version}:natives-${n}"))
+				if (m == 'lwjgl') {
+					include(runtimeOnly("org.lwjgl:${m}:${project.lwjgl_version}:natives-${n}"))
+				} else {
+					include(runtimeOnly("org.lwjgl:lwjgl-${m}:${project.lwjgl_version}:natives-${n}"))
+				}
             }
         }
     }

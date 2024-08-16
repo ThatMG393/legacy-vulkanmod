@@ -11,8 +11,7 @@ import org.lwjgl.vulkan.*;
 
 import com.thatmg393.vkapi.Vulkan;
 import com.thatmg393.vkapi.queue.QueueFamilyIndices;
-import com.thatmg393.vkapi.utils.GPUPropertiesUtil;
-import com.thatmg393.vkapi.utils.ResultChecker;
+import com.thatmg393.vkapi.utils.*;
 import com.thatmg393.vkapi.vma.VMAManager;
 
 import lombok.Getter;
@@ -69,6 +68,41 @@ public class GPU {
     }
 
     public VkDevice asLogicalDevice() {
+        if (logicalDevice != null) return this.logicalDevice;
+        
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            int[] families = QueueFamilyIndices.uniqueFamily();
+            VkDeviceQueueCreateInfo.Buffer vdqcib = VkDeviceQueueCreateInfo.calloc(families.length, stack);
+
+            for (int i = 0; i < families.length; i++) {
+                VkDeviceQueueCreateInfo vdqci = vdqcib.get(i);
+                vdqci.sType$Default();
+                vdqci.queueFamilyIndex(families[i]);
+                vdqci.pQueuePriorities(stack.floats(1.0f));
+            }
+            
+            VkPhysicalDeviceVulkan11Features vpdv11f = VkPhysicalDeviceVulkan11Features.calloc(stack);
+            vpdv11f.sType$Default();
+
+            VkPhysicalDeviceFeatures2 vpdf2 = VkPhysicalDeviceFeatures2.calloc(stack);
+            vpdf2.sType$Default();
+
+            VkDeviceCreateInfo vdci = VkDeviceCreateInfo.calloc(stack);
+            vdci.sType$Default();
+            vdci.pQueueCreateInfos(vdqcib);
+            vdci.pEnabledFeatures(vpdf2.features());
+            vdci.pNext(vpdv11f);
+            vdci.ppEnabledExtensionNames(PointerBufferUtils.asPointerBuffer(Vulkan.REQUIRED_EXTENSIONS));
+
+            PointerBuffer logicalDevicePtr = stack.pointers(VK_NULL_HANDLE);
+            ResultChecker.checkResult(
+                vkCreateDevice(physicalDevice, vdci, null, logicalDevicePtr),
+                "Failed to create logical device."
+            );
+
+            this.logicalDevice = new VkDevice(logicalDevicePtr.get(0), physicalDevice, vdci, VK11.VK_API_VERSION_1_1);
+        }
+
         return this.logicalDevice;
     }
 

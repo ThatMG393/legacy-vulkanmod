@@ -28,7 +28,8 @@ public class Platform {
     }
 
     private static int getPlatformLinux() {
-        return switch (System.getenv("XDG_SESSION_TYPE")) {
+        String desktopEnvironment = System.getenv().getOrDefault("XDG_SESSION_TYPE", "");
+        return switch (desktopEnvironment) {
             case "wayland" -> GLFW.GLFW_PLATFORM_WAYLAND;
             case "x11" -> GLFW.GLFW_PLATFORM_X11;
             default -> GLFW.GLFW_ANY_PLATFORM;

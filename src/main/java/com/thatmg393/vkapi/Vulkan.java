@@ -1,10 +1,13 @@
 package com.thatmg393.vkapi;
 
 import static org.lwjgl.vulkan.VK10.*;
+import static org.lwjgl.vulkan.KHRSwapchain.VK_KHR_SWAPCHAIN_EXTENSION_NAME;
 
 import java.nio.LongBuffer;
+import java.util.*;
 
 import org.lwjgl.PointerBuffer;
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWVulkan;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.system.MemoryStack;
@@ -17,6 +20,8 @@ import com.thatmg393.vkapi.utils.ResultChecker;
 import lombok.Getter;
 
 public class Vulkan {
+    public static Set<String> REQUIRED_EXTENSIONS = new HashSet<>(List.of(VK_KHR_SWAPCHAIN_EXTENSION_NAME));
+
     private static final Vulkan SG_INSTANCE = new Vulkan();
 
     public static Vulkan getInstance() {
@@ -71,6 +76,7 @@ public class Vulkan {
         try (MemoryStack stack = MemoryStack.stackPush()) {
             LongBuffer surfacePtr = stack.longs(VK_NULL_HANDLE);
 
+            GLFW.glfwWindowHint(GLFW.GLFW_CLIENT_API, GLFW.GLFW_NO_API);
             ResultChecker.checkResult(GLFWVulkan.glfwCreateWindowSurface(vkInstance, windowPtr, null, surfacePtr), "Failed to create a Vulkan window");
             
             this.surfacePtr = surfacePtr.get(0);
