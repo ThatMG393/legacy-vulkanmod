@@ -15,6 +15,7 @@ import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 
 public class VTexture extends BaseImage<VTexture.Builder> {
+    @Getter
     private long mainImageView;
 
     public VTexture(VTexture.Builder builder) {

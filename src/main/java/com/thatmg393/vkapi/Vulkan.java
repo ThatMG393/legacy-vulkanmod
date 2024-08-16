@@ -40,6 +40,10 @@ public class Vulkan {
         return GPUManager.getInstance().getSelectedGPU();
     }
 
+    public PointerBuffer getRequiredDefaultExtensions() {
+        return GLFWVulkan.glfwGetRequiredInstanceExtensions();
+    }
+
     private void createVkInstance() {
         try (MemoryStack stack = MemoryStack.stackPush()) {
             VkApplicationInfo vai = VkApplicationInfo.calloc(stack);
@@ -54,7 +58,7 @@ public class Vulkan {
             VkInstanceCreateInfo vici = VkInstanceCreateInfo.calloc(stack);
             vici.sType(VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO);
             vici.pApplicationInfo(vai);
-            vici.ppEnabledExtensionNames(getGLFWRequiredExtensions());
+            vici.ppEnabledExtensionNames(getRequiredDefaultExtensions());
 
             PointerBuffer instancePtr = stack.mallocPointer(1);
             ResultChecker.checkResult(vkCreateInstance(vici, null, instancePtr), "Failed to create a Vulkan instance");
@@ -71,9 +75,5 @@ public class Vulkan {
             
             this.surfacePtr = surfacePtr.get(0);
         }
-    }
-
-    private PointerBuffer getGLFWRequiredExtensions() {
-        return GLFWVulkan.glfwGetRequiredInstanceExtensions();
     }
 }

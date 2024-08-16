@@ -13,6 +13,7 @@ import com.thatmg393.vkapi.Vulkan;
 import com.thatmg393.vkapi.queue.QueueFamilyIndices;
 import com.thatmg393.vkapi.utils.GPUPropertiesUtil;
 import com.thatmg393.vkapi.utils.ResultChecker;
+import com.thatmg393.vkapi.vma.VMAManager;
 
 import lombok.Getter;
 
@@ -24,11 +25,8 @@ public class GPU {
     public final VkPhysicalDeviceProperties phyDevProperties;
     public final VkPhysicalDeviceMemoryProperties phyDevMemProperties;
 
-    @Getter
-    private long vmaPtr;
-
-    private VkDevice logicalDevice;
     private VkPhysicalDevice physicalDevice;
+    private VkDevice logicalDevice;
     private int depthFormat = -69420;
 
     public GPU(VkPhysicalDevice physicalDevice) {
@@ -75,27 +73,7 @@ public class GPU {
     }
 
     protected void init() {
-        initializeVMA();
+        VMAManager.getInstance().initializeVMA(physicalDevice);
         QueueFamilyIndices.findQueueFamilies(physicalDevice);
-    }
-
-    private void initializeVMA() {
-        try (MemoryStack stack = MemoryStack.stackPush()) {
-            VmaVulkanFunctions vvf = VmaVulkanFunctions.calloc(stack);
-            vvf.set(Vulkan.getInstance().getVkInstance(), asLogicalDevice());
-
-            VmaAllocatorCreateInfo vai = VmaAllocatorCreateInfo.calloc(stack);
-            vai.physicalDevice(physicalDevice);
-            vai.device(asLogicalDevice());
-            vai.pVulkanFunctions(vvf);
-            vai.instance(Vulkan.getInstance().getVkInstance());
-            vai.vulkanApiVersion(VK11.VK_API_VERSION_1_1);
-
-            PointerBuffer vmaPtr = stack.pointers(VK_NULL_HANDLE);
-
-            ResultChecker.checkResult(Vma.vmaCreateAllocator(vai, vmaPtr), "Failed to create VMA");
-
-            this.vmaPtr = vmaPtr.get(0);
-        }
     }
 }

@@ -11,6 +11,7 @@ import org.lwjgl.vulkan.VkPhysicalDevice;
 
 import static org.lwjgl.vulkan.VK10.*;
 
+import com.thatmg393.vkapi.Vulkan;
 import com.thatmg393.vkapi.utils.ResultChecker;
 
 public class GPUManager {
@@ -60,7 +61,7 @@ public class GPUManager {
     }
 
     public boolean isGPUSupported(VkPhysicalDevice device) {
-        PointerBuffer glfwReqExt = GLFWVulkan.glfwGetRequiredInstanceExtensions();
+        PointerBuffer glfwReqExt = Vulkan.getInstance().getRequiredDefaultExtensions();
         return true;
     }
 }
