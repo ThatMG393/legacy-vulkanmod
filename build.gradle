@@ -26,8 +26,9 @@ dependencies {
 
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "com.github.Zarzelcow:legacy-lwjgl3:main-SNAPSHOT"
-
+	
 	include(modImplementation("it.unimi.dsi:fastutil:${project.fastutil_core_version}"))
+	include(modImplementation("org.joml:joml:${project.joml_version}"))
 	include(modImplementation("org.slf4j:slf4j-api:${project.slf4j_api_version}"))
 	
 	includeLWJGLModules()

@@ -3,11 +3,17 @@
   "minVersion": "0.8",
   "package": "com.thatmg393.legacyvkm.mixins",
   "compatibilityLevel": "JAVA_17",
-  "mixins": [
+  "mixins": [],
+  "client": [
     "client.MinecraftClientM",
-    "opengl.DisplayM"
+    "opengl.DisplayM",
+
+
+    "blaze3d.platform.GLXM",
+    "blaze3d.platform.GlStateManagerM",
+
+    "texture.TextureUtilM"
   ],
-  "client": [],
   "injectors": {
     "defaultRequire": 1
   }
