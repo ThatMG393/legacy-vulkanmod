@@ -10,4 +10,4 @@ And also because why not?
  - xCollateral: for the original VulkanMod
 
 # License
-Haven't got any time to pick a proper license but it will probably be the same as VulkanMod's license.
+Haven't got any time to change to a proper license but it will probably be the same as VulkanMod's license.
