@@ -8,6 +8,8 @@ And also because why not?
 
 # Credits
  - xCollateral: for the original VulkanMod
+ - Zarzelcow: for legacy-lwjgl3
+ - Legacy Fabric Team: for the legacy fabric project
 
 # License
 Haven't got any time to change to a proper license but it will probably be the same as VulkanMod's license.
