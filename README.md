@@ -1,3 +1,5 @@
+## pausing development for a while
+
 # legacy-vulkanmod
 A port of [xCollateral's VulkanMod](https://github.com/xCollateral/VulkanMod) to Legacy Fabric 1.8.9
 
