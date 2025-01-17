@@ -76,7 +76,6 @@ public class Vulkan {
         try (MemoryStack stack = MemoryStack.stackPush()) {
             LongBuffer surfacePtr = stack.longs(VK_NULL_HANDLE);
 
-            GLFW.glfwWindowHint(GLFW.GLFW_CLIENT_API, GLFW.GLFW_NO_API);
             ResultChecker.checkResult(GLFWVulkan.glfwCreateWindowSurface(vkInstance, windowPtr, null, surfacePtr), "Failed to create a Vulkan window");
             
             this.surfacePtr = surfacePtr.get(0);

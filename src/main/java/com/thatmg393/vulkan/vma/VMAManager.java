@@ -3,26 +3,16 @@ package com.thatmg393.vulkan.vma;
 import static org.lwjgl.util.vma.Vma.*;
 import static org.lwjgl.vulkan.VK10.*;
 
-import java.nio.IntBuffer;
 import java.nio.LongBuffer;
-import java.util.HashMap;
 
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.system.MemoryStack;
-import org.lwjgl.util.vma.Vma;
-import org.lwjgl.util.vma.VmaAllocationCreateInfo;
-import org.lwjgl.util.vma.VmaAllocatorCreateInfo;
-import org.lwjgl.util.vma.VmaVulkanFunctions;
-import org.lwjgl.vulkan.VK11;
-import org.lwjgl.vulkan.VkBufferCreateInfo;
-import org.lwjgl.vulkan.VkImageCreateInfo;
-import org.lwjgl.vulkan.VkPhysicalDevice;
+import org.lwjgl.util.vma.*;
+import org.lwjgl.vulkan.*;
 
 import com.thatmg393.vulkan.Vulkan;
 import com.thatmg393.vulkan.buffer.base.BaseBuffer;
 import com.thatmg393.vulkan.gpu.GPU;
-import com.thatmg393.vulkan.gpu.GPUManager;
-import com.thatmg393.vulkan.image.base.BaseImage;
 import com.thatmg393.vulkan.utils.ResultChecker;
 
 import lombok.Getter;
@@ -33,8 +23,8 @@ public class VMAManager {
 
     private VMAManager() { }
 
-    private final HashMap<Long, BaseImage<? extends BaseImage.Builder>> images = new HashMap<>();
-    private long VMAInstance = 0;
+    @Getter
+    private long vmaInstance;
 
     public void initializeVMA(VkPhysicalDevice physicalDevice) {
         try (MemoryStack stack = MemoryStack.stackPush()) {
@@ -54,7 +44,7 @@ public class VMAManager {
 
             ResultChecker.checkResult(Vma.vmaCreateAllocator(vai, vmaPtr), "Failed to create VMA");
 
-            VMAInstance = vmaPtr.get(0);
+            vmaInstance = vmaPtr.get(0);
         }
     }
 
@@ -70,7 +60,7 @@ public class VMAManager {
 
             ResultChecker.checkResult(
                 vmaCreateBuffer(
-                    getVMA(), vbci, vaci, bufferPtr, memoryAllocPtr, null
+                    getVmaInstance(), vbci, vaci, bufferPtr, memoryAllocPtr, null
                 ),
                 "Failed to create buffer"
             );
@@ -91,48 +81,6 @@ public class VMAManager {
     }
 
     public void mapBuffer(long allocation, PointerBuffer data) {
-        vmaMapMemory(getVMA(), allocation, data);
-    }
-
-    public void addImage(BaseImage<? extends BaseImage.Builder> image) {
-        images.putIfAbsent(image.getId(), image);
-    }
-
-    public void createImage(
-        int width, int height, 
-        int mipLevels, int format, int tiling, int usage, int memoryFlags,
-        IntBuffer queueFamily, LongBuffer pImage, PointerBuffer pImageMemory
-    ) {
-        try (MemoryStack stack = MemoryStack.stackPush()) {
-            VkImageCreateInfo vici = VkImageCreateInfo.calloc(stack);
-            vici.sType$Default();
-            vici.imageType(VK_IMAGE_TYPE_2D);
-            vici.mipLevels(mipLevels);
-            vici.format(format);
-            vici.tiling(tiling);
-            vici.usage(usage);
-            vici.arrayLayers(1);
-            vici.initialLayout(VK_IMAGE_LAYOUT_UNDEFINED);
-            vici.samples(VK_SAMPLE_COUNT_1_BIT);
-            vici.sharingMode(VK_SHARING_MODE_EXCLUSIVE);
-            vici.pQueueFamilyIndices(queueFamily);
-            vici.extent((e) -> {
-                e.width(width); e.height(height); e.depth(1);
-            });
-
-            VmaAllocationCreateInfo vaci = VmaAllocationCreateInfo.calloc(stack);
-            vaci.requiredFlags(memoryFlags);
-
-            ResultChecker.checkResult(
-                vmaCreateImage(
-                    getVMA(), vici, vaci, pImage, pImageMemory, null
-                ),
-                "Failed to create image"
-            );
-        }
-    }
-
-    private final long getVMA() {
-        return this.VMAInstance;
+        vmaMapMemory(getVmaInstance(), allocation, data);
     }
 }

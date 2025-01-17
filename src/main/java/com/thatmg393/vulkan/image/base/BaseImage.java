@@ -8,7 +8,7 @@ import org.lwjgl.PointerBuffer;
 import org.lwjgl.system.MemoryStack;
 
 import com.thatmg393.vulkan.image.utils.ImageUtils;
-import com.thatmg393.vulkan.vma.VMAManager;
+import com.thatmg393.vulkan.vma.VMAImage;
 
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
@@ -30,19 +30,20 @@ public class BaseImage<B extends BaseImage.Builder> {
             LongBuffer id = stack.mallocLong(1);
             PointerBuffer allocation = stack.pointers(0L);
 
-            VMAManager.getInstance().createImage(
-                builder.getWidth(), builder.getHeight(),
-                builder.getMipLevels(), builder.getFormat(),
-                builder.getTiling(), builder.getUsage(),
-                VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-                stack.ints(0), // Graphics Queue
-                id, allocation
+            VMAImage.getInstance().create(
+                new VMAImage.Builder(
+                    builder.getWidth(), builder.getHeight(), 1,
+                    builder.getMipLevels(), builder.getFormat(), builder.getTiling(),
+                    builder.getUsage(),
+                    VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+                    stack.ints(0), id, allocation
+                )
             );
 
             this.id = id.get(0);
             this.allocation = allocation.get(0);
 
-            VMAManager.getInstance().addImage(this);
+            VMAImage.getInstance().addImage(this);
         }
     }
 

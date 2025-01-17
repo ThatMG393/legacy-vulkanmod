@@ -1,7 +1,6 @@
 package com.thatmg393.legacyvkm;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import com.thatmg393.legacyvkm.utils.Platform;
 import com.thatmg393.vulkan.Vulkan;

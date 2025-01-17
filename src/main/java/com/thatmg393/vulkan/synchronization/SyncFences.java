@@ -32,6 +32,7 @@ public class SyncFences extends Synchronization<Long> {
         fences.put(index++, obj);
     }
 
+    @Override
     public synchronized void waitAll() {
         if (index == 0) return;
         vkWaitForFences(

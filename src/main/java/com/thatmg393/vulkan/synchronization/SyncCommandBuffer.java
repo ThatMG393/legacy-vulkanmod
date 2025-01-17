@@ -19,6 +19,7 @@ public class SyncCommandBuffer extends Synchronization<CommandPool.CommandBuffer
         commandBuffers.add(obj);
     }
 
+    @Override
     public synchronized void waitAll() {
         SyncFences.getInstance().waitAll();
         commandBuffers.forEach(CommandPool.CommandBuffer::reset);
