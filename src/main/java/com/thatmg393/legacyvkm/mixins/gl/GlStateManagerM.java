@@ -1,4 +1,4 @@
-package com.thatmg393.legacyvkm.mixins.render;
+package com.thatmg393.legacyvkm.mixins.gl;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
