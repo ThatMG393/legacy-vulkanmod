@@ -7,10 +7,6 @@ public class Framebuffer {
 
     }
 
-
-
-
-
     @lombok.Builder
     public static class Builder {
         private int width, height;
@@ -20,6 +16,6 @@ public class Framebuffer {
         private int colorAttachment;
 
         @lombok.Builder.Default
-        private Vector4f clearColor = new Vector4f(1.0, 1.0, 1.0, 0.0);
+        private Vector4f clearColor = new Vector4f(1.0f, 1.0f, 1.0f, 0.0f);
     }
 }
