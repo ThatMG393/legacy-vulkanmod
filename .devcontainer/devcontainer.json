@@ -1,20 +1,25 @@
 {
-	"name": "Java",
-    "image": "mcr.microsoft.com/devcontainers/java:1-21-bullseye",
-	"features": {
-		"ghcr.io/devcontainers/features/java:1": {
-			"version": "none",
-			"installMaven": "false",
-			"installGradle": "false"
-		},
-		"ghcr.io/devcontainers/features/desktop-lite:1": {}
-	},
-    "forwardPorts": [6080],
+    "name": "Java",
+    "image": "mcr.microsoft.com/devcontainers/base:bullseye",
+    "features": {
+        "ghcr.io/devcontainers/features/java:1": {
+            "version": "21.0.5",
+            "installMaven": "false",
+            "installGradle": "true",
+            "jdkDistro": "graal"
+        },
+        "ghcr.io/devcontainers/features/desktop-lite:1": {}
+    },
+    "forwardPorts": [
+        6080
+    ],
     "portsAttributes": {
         "6080": {
             "label": "desktop",
             "onAutoForward": "notify"
         }
     },
-    "runArgs": ["--shm-size=1g"]
+    "runArgs": [
+        "--shm-size=1g"
+    ]
 }
