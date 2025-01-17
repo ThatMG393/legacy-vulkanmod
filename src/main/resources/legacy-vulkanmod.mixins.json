@@ -5,14 +5,13 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [],
   "client": [
-    "client.MinecraftClientM",
-    "opengl.DisplayM",
+    "startup.MinecraftClientM",
+    "startup.DisplayM",
 
+    "render.GLXM",
+    "render.GlStateManagerM",
 
-    "blaze3d.platform.GLXM",
-    "blaze3d.platform.GlStateManagerM",
-
-    "texture.TextureUtilM"
+    "render.texture.TextureUtilM"
   ],
   "injectors": {
     "defaultRequire": 1

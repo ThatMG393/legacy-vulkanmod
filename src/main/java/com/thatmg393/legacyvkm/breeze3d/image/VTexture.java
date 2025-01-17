@@ -7,9 +7,9 @@ import java.nio.LongBuffer;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.vulkan.VkImageViewCreateInfo;
 
-import com.thatmg393.vkapi.gpu.GPUManager;
-import com.thatmg393.vkapi.image.base.BaseImage;
-import com.thatmg393.vkapi.utils.ResultChecker;
+import com.thatmg393.vulkan.gpu.GPUManager;
+import com.thatmg393.vulkan.image.base.BaseImage;
+import com.thatmg393.vulkan.utils.ResultChecker;
 
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
