@@ -15,3 +15,9 @@ And also because why not?
 
 # License
 Haven't got any time to change to a proper license but it will probably be the same as VulkanMod's license.
+
+# Progress
+- [x] Load Vulkan
+- [ ] Rewrite the rendering
+- [ ] Rewrite chunk builder
+- [ ] API
