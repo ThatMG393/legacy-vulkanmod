@@ -25,7 +25,7 @@ dependencies {
 	mappings "net.legacyfabric:yarn:${project.minecraft_version}+build.${project.yarn_build}:v2"
 
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-	modImplementation "com.github.ThatMG393:legacy-lwjgl3:main-SNAPSHOT"
+	modImplementation "com.github.ThatMG393:legacy-lwjgl3:${project.llwjgl3_version}"
 	
 	include(modImplementation("it.unimi.dsi:fastutil:${project.fastutil_core_version}"))
 	include(modImplementation("org.joml:joml:${project.joml_version}"))
